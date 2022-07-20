@@ -8,7 +8,6 @@ const {
 module.exports = async ({ getNamedAccounts, deployments }) => {
     const { deploy, log } = deployments
     const { deployer } = await getNamedAccounts()
-    const chainId = network.config.chainId
 
     if (developmentChains.includes(network.name)) {
         log("Local network detecting!!Deploying Mocks!!")
@@ -20,6 +19,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     }
 
     log("Mocks Deployed!!")
+    log("------------------------------------------------------------------")
 }
 
 module.exports.tags = ["all", "mocks"]
