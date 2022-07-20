@@ -1,0 +1,25 @@
+{
+  "name": "hardhat-fund-me",
+  "version": "1.0.0",
+  "description": "This is a testing repository",
+  "main": "index.js",
+  "repository": "https://github.com/r4h01/hardhat-fund-me.git",
+  "author": "r4h01",
+  "license": "MIT",
+  "dependencies": {
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "hardhat": "^2.10.1",
+    "hardhat-gas-reporter": "^1.0.8",
+    "solidity-coverage": "^0.7.21"
+  },
+  "devDependencies": {
+    "@chainlink/contracts": "^0.4.1",
+    "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers",
+    "@nomiclabs/hardhat-etherscan": "^3.1.0",
+    "dotenv": "^16.0.1",
+    "ethereum-waffle": "^3.2.0",
+    "ethers": "^5.6.9",
+    "hardhat-deploy": "^0.11.11",
+    "solhint": "^3.3.7"
+  }
+}
