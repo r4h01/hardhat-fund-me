@@ -1,36 +1,70 @@
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
-
+/**
+ *@author r4h01
+ *@title Fund Me contract
+ *@dev this contract use price feeds from chainlink
+ */
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "./PriceConverter.sol";
 
 error FundMe__NotOwner();
+error FundMe__NotEnoughEth();
 
 contract FundMe {
+    ///Type declarations
     using PriceConverter for uint256;
+    ///State variables
+    //s_ indica funzioni salvate in storage
 
     uint256 public constant MINIMUM_USD = 50 * 10**18;
     address private immutable i_owner;
-    address[] private s_funders;
+    address[] public s_funders;
     mapping(address => uint256) private s_addressToAmountFunded;
     AggregatorV3Interface private s_priceFeed;
+    ///Events
+    event EthInUsd(uint256 quantity);
 
+    ///Modifiers
     modifier onlyOwner() {
         if (msg.sender != i_owner) revert FundMe__NotOwner();
         _;
     }
 
+    ///Functions
+    /**
+    constructor
+
+    receive function (if exists)
+
+    fallback function (if exists)
+
+    external
+
+    public
+
+    internal
+
+    private 
+*/
+
+    ///constructor
     constructor(address priceFeed) {
         s_priceFeed = AggregatorV3Interface(priceFeed);
         i_owner = msg.sender;
     }
 
+    ///public
+    function getEthUsdValue() public returns (uint256) {
+        uint256 quantity = PriceConverter.getFifthyUsdInEth(s_priceFeed);
+        emit EthInUsd(quantity);
+        return quantity;
+    }
+
     function fund() public payable {
-        require(
-            msg.value.getConversionRate(s_priceFeed) >= MINIMUM_USD,
-            "You need to spend more ETH!"
-        );
+        if (msg.value.getConversionRate(s_priceFeed) <= MINIMUM_USD)
+            revert FundMe__NotEnoughEth();
         s_addressToAmountFunded[msg.sender] += msg.value;
         s_funders.push(msg.sender);
     }
